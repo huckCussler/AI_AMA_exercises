@@ -1,0 +1,44 @@
+problem:
+> Three missionaries, three cannibals on one side of a river with a boat that can hold one or two
+> people.  Get everyone to the other side of the river.  The number of missionaries in one place
+> must be at least as high as the number of canibals in that place.
+
+solve the problem optimally
+
+representation:
+> Let M represent the missionaries on the starting side of the river, M' represent the missionaries
+> on the objective side of the river.  M and M' are 3-digit bit vectors where each bit represents
+> the location of each missionary.  e.g. M=101 means the first and third missionary are on the
+> starting side of the river and implies that M'=010 so the second missionary is on the objective
+> side.
+>
+> Let C and C' be defined similarly for the cannibals.
+>
+> Let B=1 if the boat is on the starting side of the river, B=0 otherwise.  Similarly, let B'=1 if
+> the boat is on the objective side and B'=0 if it is not.
+
+goal state:
+> M=000, M'=111, C=000, C'=111, B=0, B'=1.
+
+starting state:
+> M=111, M'=000, C=111, C'=000, B=1, B'=0.
+
+actions:
+> If B=1, then
+>> Must set B=0 and B'=1, and also do one of:
+>>> Move one bit from M to M'
+>>> Move one bit from C to C'
+>>> Move two bits from M to M'
+>>> Move two bits from C to C'
+>>> Move one bit from M to M' and one bit from C to C'
+> Else If B'=1, then
+>> Must set B=1 and B'=0, and also do one of:
+>>> Move one bit from M' to M
+>>> Move one bit from C' to C
+>>> Move two bits from M' to M
+>>> Move two bits from C' to C
+>>> Move one bit from M' to M and one bit from C' to C
+
+constraints:
+> sum(M) >= sum(C)
+> sum(M') >= sum(C')
