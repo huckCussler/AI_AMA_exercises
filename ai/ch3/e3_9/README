@@ -1,44 +1,41 @@
 problem:
 > Three missionaries, three cannibals on one side of a river with a boat that can hold one or two
-> people.  Get everyone to the other side of the river.  The number of missionaries in one place
-> must be at least as high as the number of canibals in that place.
+> people.  Get everyone to the other side of the river.  The missionaries can never be outnumbered
+> on either side of the river.
 
 solve the problem optimally
 
 representation:
-> Let M represent the missionaries on the starting side of the river, M' represent the missionaries
-> on the objective side of the river.  M and M' are 3-digit bit vectors where each bit represents
-> the location of each missionary.  e.g. M=101 means the first and third missionary are on the
-> starting side of the river and implies that M'=010 so the second missionary is on the objective
-> side.
+> Let ms represent the missionaries on the starting side of the river, mg represent the missionaries
+> on the goad side of the river.  ms and mg are integers in the range 0-3.
 >
-> Let C and C' be defined similarly for the cannibals.
+> Let cs and cg be defined similarly for the cannibals.
 >
-> Let B=1 if the boat is on the starting side of the river, B=0 otherwise.  Similarly, let B'=1 if
-> the boat is on the objective side and B'=0 if it is not.
+> Let bs=1 if the boat is on the starting side of the river, 0 otherwise.  Similarly, let bg=1 if
+> the boat is on the objective side and 0 if it is not.
 
 goal state:
-> M=000, M'=111, C=000, C'=111, B=0, B'=1.
+> ms==0, mg==3, cs==0, cg==3, bs==0, bg==1.
 
 starting state:
-> M=111, M'=000, C=111, C'=000, B=1, B'=0.
+> ms==3, mg==0, cs==3, cg==0, bs==1, bg==1.
 
 actions:
-> If B=1, then
->> Must set B=0 and B'=1, and also do one of:
->>> Move one bit from M to M'
->>> Move one bit from C to C'
->>> Move two bits from M to M'
->>> Move two bits from C to C'
->>> Move one bit from M to M' and one bit from C to C'
-> Else If B'=1, then
->> Must set B=1 and B'=0, and also do one of:
->>> Move one bit from M' to M
->>> Move one bit from C' to C
->>> Move two bits from M' to M
->>> Move two bits from C' to C
->>> Move one bit from M' to M and one bit from C' to C
+> If bs==1, then
+>> set bs=0, bg=1 and do one of:
+>>> ms-=1, mg+=1
+>>> cs-=1, cg+=1
+>>> ms-=2, mg+=2
+>>> cs-=2, cg+=2
+>>> ms-=1, mg+=1, cs-=1, cg+=1
+> Else (bg==1), then
+>> set bg=0, bs=1 and do one of:
+>>> mg-=1, ms+=1
+>>> cg-=1, cs+=1
+>>> mg-=2, ms+=2
+>>> cg-=2, cs+=2
+>>> mg-=1, ms+=1, cg-=1, cs+=1
 
 constraints:
-> sum(M) >= sum(C)
-> sum(M') >= sum(C')
+> ms==0 OR ms>=cs
+> mg==0 OR mg>=cg
